@@ -4,6 +4,7 @@ struct SettingsView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     @AppStorage("appearance") private var appearance = AppearanceChoice.system.rawValue
+    @AppStorage("textSize") private var textSize = TextSizeChoice.system.rawValue
 
     @State private var draft: Settings?
     @State private var url = ""
@@ -24,6 +25,9 @@ struct SettingsView: View {
                 Section {
                     Picker("Darstellung", selection: $appearance) {
                         ForEach(AppearanceChoice.allCases) { Text($0.label).tag($0.rawValue) }
+                    }
+                    Picker("Schriftgröße", selection: $textSize) {
+                        ForEach(TextSizeChoice.allCases) { Text($0.label).tag($0.rawValue) }
                     }
                 }
                 if let saveError { Section { Text(saveError).foregroundStyle(.red) } }

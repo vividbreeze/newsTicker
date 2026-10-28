@@ -26,7 +26,7 @@ struct TickerRow: View {
                     Spacer()
                     Text(item.sourceName).font(.caption).foregroundStyle(.secondary).lineLimit(1)
                 }
-                Text(item.title).font(.headline)
+                Text(item.title).font(.headline).padding(.bottom, 3) // etwas Luft zum Teaser
                 if !item.teaser.isEmpty { Text(item.teaser).font(.subheadline) }
 
                 HStack {

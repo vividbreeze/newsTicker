@@ -35,7 +35,7 @@
 /* Begin PBXFileReference section */
 		22A72D214F7BFEA73FAA0E87 /* Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatting.swift; sourceTree = "<group>"; };
 		4392B2EDA3EE246757AD77DA /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
-		5C0F2E802A8251658122F0FB /* NewsTicker.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NewsTicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C0F2E802A8251658122F0FB /* NewsTicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsTicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F305FC895ABC804B3531355 /* NewsTickerTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = NewsTickerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7354D7BE0A7573A639C741C3 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		8716CB14AED20FA0A1958117 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -149,9 +149,6 @@
 					FDECE51D16CD0DFCDD3DF94D = {
 						DevelopmentTeam = "";
 					};
-					FEADA21D5A3FFBC6F2E0D346 = {
-						DevelopmentTeam = "";
-					};
 				};
 			};
 			buildConfigurationList = 19B44DB5DC7756B74FB0A957 /* Build configuration list for PBXProject "NewsTicker" */;
@@ -246,6 +243,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 9M2M7GZAP4;
 				INFOPLIST_FILE = NewsTicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -322,6 +320,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 9M2M7GZAP4;
 				INFOPLIST_FILE = NewsTicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
