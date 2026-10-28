@@ -3,15 +3,15 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      API_TOKEN: ${API_TOKEN:?API_TOKEN fehlt}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:?ANTHROPIC_API_KEY fehlt}
+      API_TOKEN: ${API_TOKEN:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-haiku-5-5}
       CACHE_TTL_MINUTES: ${CACHE_TTL_MINUTES:-20}
       RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-30}
       LLM_MAX_CALLS_PER_DAY: ${LLM_MAX_CALLS_PER_DAY:-300}
       MAX_AGE_HOURS: ${MAX_AGE_HOURS:-48}
       PREFETCH_DETAILS: ${PREFETCH_DETAILS:-1}
-      DOMAIN: ${DOMAIN:?DOMAIN fehlt}
+      DOMAIN: ${DOMAIN:-localhost}
       TZ: ${TZ:-Europe/Berlin}
     volumes:
       - data:/data
