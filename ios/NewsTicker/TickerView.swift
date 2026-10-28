@@ -50,7 +50,7 @@ struct TickerView: View {
                 if let c = model.meta?.countries.first(where: { $0.code == code }) {
                     let on = code == model.country
                     Button { model.country = code } label: {
-                        Text("\(c.flag) \(c.short)").font(.subheadline.weight(on ? .semibold : .medium))
+                        HStack(spacing: 6) { FlagView(code: c.code); Text(c.short) }.font(.subheadline.weight(on ? .semibold : .medium))
                             .frame(maxWidth: .infinity, minHeight: 40)
                             .background(on ? Color(.systemBackground) : .clear, in: RoundedRectangle(cornerRadius: 8))
                             .shadow(color: on ? .black.opacity(0.12) : .clear, radius: 2, y: 1)

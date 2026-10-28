@@ -60,7 +60,10 @@ struct SettingsView: View {
     private var countriesSection: some View {
         Section {
             ForEach(draft?.activeCountries ?? [], id: \.self) { code in
-                Label { Text(countryName(code)) } icon: { Image(systemName: "checkmark").foregroundStyle(.tint) }
+                HStack(spacing: 10) {
+                    Image(systemName: "checkmark").foregroundStyle(.tint)
+                    FlagView(code: code); Text(countryName(code))
+                }
             }
             .onMove { from, to in
                 draft?.activeCountries.move(fromOffsets: from, toOffset: to); commit()
@@ -70,7 +73,7 @@ struct SettingsView: View {
                     // Ein inaktives Land ersetzt das dritte.
                     draft?.activeCountries[2] = code; commit()
                 } label: {
-                    HStack { Text(countryName(code)).foregroundStyle(.primary); Spacer(); Text("ersetzt Platz 3").font(.footnote).foregroundStyle(.secondary) }
+                    HStack(spacing: 10) { Image(systemName: "checkmark").hidden(); FlagView(code: code); Text(countryName(code)).foregroundStyle(.primary); Spacer(); Text("ersetzt Platz 3").font(.footnote).foregroundStyle(.secondary) }
                 }
             }.moveDisabled(true)
         } header: { Text("Länder (genau 3, Reihenfolge ziehbar)") }
@@ -95,7 +98,7 @@ struct SettingsView: View {
     private var sourcesSection: some View {
         ForEach(draft?.activeCountries ?? [], id: \.self) { code in
             Section {
-                DisclosureGroup(countryName(code), isExpanded: Binding(get: { expanded.contains(code) }, set: { if $0 { expanded.insert(code) } else { expanded.remove(code) } })) {
+                DisclosureGroup(isExpanded: Binding(get: { expanded.contains(code) }, set: { if $0 { expanded.insert(code) } else { expanded.remove(code) } })) {
                     ForEach(draft?.sources[code] ?? [], id: \.id) { src in
                         let info = model.sources.first { $0.id == src.id }
                         HStack(spacing: 10) {
@@ -109,7 +112,7 @@ struct SettingsView: View {
                         }
                     }
                     .onMove { from, to in draft?.sources[code]?.move(fromOffsets: from, toOffset: to); commit() }
-                }
+                } label: { HStack(spacing: 10) { FlagView(code: code); Text(countryName(code)) } }
             } header: { if code == draft?.activeCountries.first { Text("Quellen") } }
         }
     }
@@ -120,8 +123,7 @@ struct SettingsView: View {
         (model.meta?.countries.map(\.code) ?? []).filter { !(draft?.activeCountries.contains($0) ?? false) }
     }
     private func countryName(_ code: String) -> String {
-        guard let c = model.meta?.countries.first(where: { $0.code == code }) else { return code }
-        return "\(c.flag) \(c.name)"
+        model.meta?.countries.first(where: { $0.code == code })?.name ?? code
     }
     private func color(_ status: String?) -> Color {
         switch status { case "ok": .green; case "warn": .yellow; case "error": .red; default: .gray }
