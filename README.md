@@ -72,6 +72,16 @@ Typen und Zod-Schemas: `shared/src/index.ts`.
 
 Die Auswahl der Meldungen folgt der Redaktionsreihenfolge (Reißverschluss über die Quellen), die Anzeige ist chronologisch (neueste zuerst); „Top" markiert Platz 1 einer Quelle.
 
+## iOS-App
+
+SwiftUI (iOS 17+), Projekt in `ios/` (erzeugt mit XcodeGen aus `ios/project.yml`; `brew install xcodegen && cd ios && xcodegen generate`).
+
+```bash
+open ios/NewsTicker.xcodeproj
+```
+
+In Xcode unter Signing & Capabilities dein Team wählen und auf dem iPhone starten. Beim ersten Start Server-URL (`https://ticker.vividbreeze.com`) und Token eintragen; das Token liegt im Schlüsselbund. Die App nutzt dieselbe API wie die Web-App (Einstellungen werden serverseitig gespeichert).
+
 ## Hinweise zu Quellen
 
 `npm run validate-feeds` bewertet jeden Seed-Feed. Stand der Prüfung (28.10.2026): 101 von 102 URLs erreichbar und parsebar. Bekannte Probleme:
