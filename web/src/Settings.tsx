@@ -109,7 +109,7 @@ export function SettingsScreen({ conn, meta, settings, prefs, onBack, onSettings
         </div>
 
         <h3 className="group-title">Quellen</h3>
-        {s.activeCountries.map((c) => (
+        {[...s.activeCountries, ...inactive].map((c) => (
           <div className="group" key={c}>
             <button className="row link" onClick={() => setOpenC(openC === c ? null : c)} aria-expanded={openC === c}>
               <span className="grow left">{name(c).flag} {name(c).name}</span>

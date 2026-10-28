@@ -96,7 +96,7 @@ struct SettingsView: View {
     }
 
     private var sourcesSection: some View {
-        ForEach(draft?.activeCountries ?? [], id: \.self) { code in
+        ForEach((draft?.activeCountries ?? []) + inactiveCountries, id: \.self) { code in
             Section {
                 DisclosureGroup(isExpanded: Binding(get: { expanded.contains(code) }, set: { if $0 { expanded.insert(code) } else { expanded.remove(code) } })) {
                     ForEach(draft?.sources[code] ?? [], id: \.id) { src in
