@@ -34,7 +34,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     feedTimeoutMs: num(env.FEED_TIMEOUT_MS, 8000),
     dbPath: env.DB_PATH || './data/ticker.sqlite',
     webDir: env.WEB_DIR || '../web/dist',
-    corsOrigin: env.DOMAIN ? `https://${env.DOMAIN}` : false,
+    corsOrigin: env.DOMAIN ? `https://${env.DOMAIN.replace(/^https?:\/\//, '').replace(/\/.*$/, '')}` : false,
     prefetchDetails: env.PREFETCH_DETAILS !== '0',
     prefetchBudgetMs: num(env.PREFETCH_BUDGET_MS, 12000),
     userAgent: 'Mozilla/5.0 (compatible; PrivateNewsTicker/1.0; +personal use)',
