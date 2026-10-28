@@ -23,7 +23,7 @@ npm run validate-feeds        # alle Seed-Feeds abrufen und Bericht ausgeben
 ## Deployment auf dem Hostinger-VPS
 
 1. **DNS:** Lege bei deinem Domain-Anbieter einen A-Record (`ticker.deinedomain.de`) auf die IP des VPS an. Ports 80 und 443 müssen offen sein (Caddy braucht beide für Let's Encrypt).
-2. **Code auf den VPS:** per SSH `git clone <dein-repo> news-ticker && cd news-ticker` (oder Ordner hochladen). Im Hostinger-Docker-Manager kannst du alternativ „Compose aus URL" mit der Git-URL des Repos nutzen; die Compose-Datei baut das Image selbst (`build: .`), daher wird der ganze Projektordner benötigt.
+2. **Code auf den VPS:** Entweder im Hostinger-Docker-Manager „Compose aus URL" mit `https://github.com/vividbreeze/newsTicker.git` wählen und die Umgebungsvariablen aus `.env.example` im Formular eintragen (DOMAIN, API_TOKEN, ANTHROPIC_API_KEY, …), oder per SSH `git clone https://github.com/vividbreeze/newsTicker.git && cd newsTicker`. Die Compose-Datei baut das Image selbst (`build: .`).
 3. **`.env` anlegen:**
    ```bash
    cp .env.example .env
