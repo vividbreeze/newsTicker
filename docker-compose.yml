@@ -21,7 +21,7 @@ services:
   caddy:
     image: caddy:2-alpine
     # Reverse Proxy mit automatischem HTTPS (Let's Encrypt); HTTP leitet Caddy selbst um
-    command: caddy reverse-proxy --from ${DOMAIN} --to app:3000
+    command: caddy reverse-proxy --from ${DOMAIN:-localhost} --to app:3000
     restart: unless-stopped
     depends_on:
       - app
