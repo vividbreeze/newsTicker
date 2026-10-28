@@ -1,0 +1,254 @@
+[
+ {
+  "id": "google-jp",
+  "country": "jp",
+  "name": "Google News Japan",
+  "type": "google_news",
+  "feeds": {
+   "top": "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja",
+   "politics": "https://news.google.com/rss/headlines/section/topic/NATION?hl=ja&gl=JP&ceid=JP:ja",
+   "business": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=ja&gl=JP&ceid=JP:ja",
+   "tech": "https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=ja&gl=JP&ceid=JP:ja",
+   "science": "https://news.google.com/rss/headlines/section/topic/SCIENCE?hl=ja&gl=JP&ceid=JP:ja",
+   "health": "https://news.google.com/rss/headlines/section/topic/HEALTH?hl=ja&gl=JP&ceid=JP:ja",
+   "culture": "https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=ja&gl=JP&ceid=JP:ja",
+   "sports": "https://news.google.com/rss/headlines/section/topic/SPORTS?hl=ja&gl=JP&ceid=JP:ja"
+  },
+  "defaultEnabled": true
+ },
+ {
+  "id": "google-de",
+  "country": "de",
+  "name": "Google News Deutschland",
+  "type": "google_news",
+  "feeds": {
+   "top": "https://news.google.com/rss?hl=de&gl=DE&ceid=DE:de",
+   "politics": "https://news.google.com/rss/headlines/section/topic/NATION?hl=de&gl=DE&ceid=DE:de",
+   "business": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=de&gl=DE&ceid=DE:de",
+   "tech": "https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=de&gl=DE&ceid=DE:de",
+   "science": "https://news.google.com/rss/headlines/section/topic/SCIENCE?hl=de&gl=DE&ceid=DE:de",
+   "health": "https://news.google.com/rss/headlines/section/topic/HEALTH?hl=de&gl=DE&ceid=DE:de",
+   "culture": "https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=de&gl=DE&ceid=DE:de",
+   "sports": "https://news.google.com/rss/headlines/section/topic/SPORTS?hl=de&gl=DE&ceid=DE:de"
+  },
+  "defaultEnabled": true
+ },
+ {
+  "id": "google-us",
+  "country": "us",
+  "name": "Google News USA",
+  "type": "google_news",
+  "feeds": {
+   "top": "https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en",
+   "politics": "https://news.google.com/rss/headlines/section/topic/NATION?hl=en-US&gl=US&ceid=US:en",
+   "business": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-US&gl=US&ceid=US:en",
+   "tech": "https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-US&gl=US&ceid=US:en",
+   "science": "https://news.google.com/rss/headlines/section/topic/SCIENCE?hl=en-US&gl=US&ceid=US:en",
+   "health": "https://news.google.com/rss/headlines/section/topic/HEALTH?hl=en-US&gl=US&ceid=US:en",
+   "culture": "https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=en-US&gl=US&ceid=US:en",
+   "sports": "https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-US&gl=US&ceid=US:en"
+  },
+  "defaultEnabled": true
+ },
+ {
+  "id": "google-gb",
+  "country": "gb",
+  "name": "Google News UK",
+  "type": "google_news",
+  "feeds": {
+   "top": "https://news.google.com/rss?hl=en-GB&gl=GB&ceid=GB:en",
+   "politics": "https://news.google.com/rss/headlines/section/topic/NATION?hl=en-GB&gl=GB&ceid=GB:en",
+   "business": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-GB&gl=GB&ceid=GB:en",
+   "tech": "https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-GB&gl=GB&ceid=GB:en",
+   "science": "https://news.google.com/rss/headlines/section/topic/SCIENCE?hl=en-GB&gl=GB&ceid=GB:en",
+   "health": "https://news.google.com/rss/headlines/section/topic/HEALTH?hl=en-GB&gl=GB&ceid=GB:en",
+   "culture": "https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=en-GB&gl=GB&ceid=GB:en",
+   "sports": "https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-GB&gl=GB&ceid=GB:en"
+  },
+  "defaultEnabled": true
+ },
+ {
+  "id": "nhk",
+  "country": "jp",
+  "name": "NHK",
+  "type": "rss",
+  "feeds": {
+   "top": [
+    "https://news.web.nhk/n-data/conf/na/rss/cat0.xml",
+    "https://www.nhk.or.jp/rss/news/cat0.xml"
+   ],
+   "politics": [
+    "https://news.web.nhk/n-data/conf/na/rss/cat4.xml",
+    "https://www.nhk.or.jp/rss/news/cat4.xml"
+   ],
+   "business": [
+    "https://news.web.nhk/n-data/conf/na/rss/cat5.xml",
+    "https://www.nhk.or.jp/rss/news/cat5.xml"
+   ],
+   "science": [
+    "https://news.web.nhk/n-data/conf/na/rss/cat3.xml",
+    "https://www.nhk.or.jp/rss/news/cat3.xml"
+   ],
+   "health": [
+    "https://news.web.nhk/n-data/conf/na/rss/cat3.xml",
+    "https://www.nhk.or.jp/rss/news/cat3.xml"
+   ],
+   "culture": [
+    "https://news.web.nhk/n-data/conf/na/rss/cat2.xml",
+    "https://www.nhk.or.jp/rss/news/cat2.xml"
+   ],
+   "sports": [
+    "https://news.web.nhk/n-data/conf/na/rss/cat7.xml",
+    "https://www.nhk.or.jp/rss/news/cat7.xml"
+   ]
+  },
+  "defaultEnabled": true
+ },
+ {
+  "id": "yahoo-jp",
+  "country": "jp",
+  "name": "Yahoo! News Japan",
+  "type": "rss",
+  "feeds": {
+   "top": "https://news.yahoo.co.jp/rss/topics/top-picks.xml",
+   "politics": "https://news.yahoo.co.jp/rss/topics/domestic.xml",
+   "business": "https://news.yahoo.co.jp/rss/topics/business.xml",
+   "tech": "https://news.yahoo.co.jp/rss/topics/it.xml",
+   "science": "https://news.yahoo.co.jp/rss/topics/science.xml",
+   "culture": "https://news.yahoo.co.jp/rss/topics/entertainment.xml",
+   "sports": "https://news.yahoo.co.jp/rss/topics/sports.xml"
+  },
+  "defaultEnabled": false
+ },
+ {
+  "id": "asahi",
+  "country": "jp",
+  "name": "Asahi Shimbun",
+  "type": "rss",
+  "feeds": {
+   "top": "https://www.asahi.com/rss/asahi/newsheadlines.rdf"
+  },
+  "defaultEnabled": false
+ },
+ {
+  "id": "japantimes",
+  "country": "jp",
+  "name": "The Japan Times",
+  "type": "rss",
+  "feeds": {
+   "top": "https://www.japantimes.co.jp/feed/"
+  },
+  "defaultEnabled": false
+ },
+ {
+  "id": "tagesschau",
+  "country": "de",
+  "name": "tagesschau",
+  "type": "rss",
+  "feeds": {
+   "top": "https://www.tagesschau.de/index~rss2.xml",
+   "politics": "https://www.tagesschau.de/inland/innenpolitik/index~rss2.xml",
+   "business": "https://www.tagesschau.de/wirtschaft/index~rss2.xml",
+   "science": "https://www.tagesschau.de/wissen/index~rss2.xml",
+   "health": "https://www.tagesschau.de/wissen/gesundheit/index~rss2.xml"
+  },
+  "defaultEnabled": true
+ },
+ {
+  "id": "spiegel",
+  "country": "de",
+  "name": "DER SPIEGEL",
+  "type": "rss",
+  "feeds": {
+   "top": "https://www.spiegel.de/schlagzeilen/index.rss",
+   "politics": "https://www.spiegel.de/politik/index.rss",
+   "business": "https://www.spiegel.de/wirtschaft/index.rss",
+   "tech": "https://www.spiegel.de/netzwelt/index.rss",
+   "science": "https://www.spiegel.de/wissenschaft/index.rss",
+   "health": "https://www.spiegel.de/gesundheit/index.rss",
+   "culture": "https://www.spiegel.de/kultur/index.rss",
+   "sports": [
+    "https://www.spiegel.de/sport/index.rss",
+    "https://www.spiegel.de/sport/fussball/index.rss"
+   ]
+  },
+  "defaultEnabled": false
+ },
+ {
+  "id": "heise",
+  "country": "de",
+  "name": "heise online",
+  "type": "rss",
+  "feeds": {
+   "tech": "https://www.heise.de/rss/heise-atom.xml"
+  },
+  "defaultEnabled": false
+ },
+ {
+  "id": "nyt",
+  "country": "us",
+  "name": "The New York Times",
+  "type": "rss",
+  "feeds": {
+   "top": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+   "politics": "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+   "business": "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml",
+   "tech": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
+   "science": "https://rss.nytimes.com/services/xml/rss/nyt/Science.xml",
+   "health": "https://rss.nytimes.com/services/xml/rss/nyt/Health.xml",
+   "culture": "https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml"
+  },
+  "defaultEnabled": true
+ },
+ {
+  "id": "npr",
+  "country": "us",
+  "name": "NPR",
+  "type": "rss",
+  "feeds": {
+   "top": "https://feeds.npr.org/1001/rss.xml",
+   "politics": "https://feeds.npr.org/1014/rss.xml",
+   "business": "https://feeds.npr.org/1006/rss.xml",
+   "tech": "https://feeds.npr.org/1019/rss.xml",
+   "science": "https://feeds.npr.org/1007/rss.xml",
+   "health": "https://feeds.npr.org/1128/rss.xml",
+   "culture": "https://feeds.npr.org/1008/rss.xml",
+   "sports": "https://feeds.npr.org/1055/rss.xml"
+  },
+  "defaultEnabled": false
+ },
+ {
+  "id": "bbc",
+  "country": "gb",
+  "name": "BBC News",
+  "type": "rss",
+  "feeds": {
+   "top": "https://feeds.bbci.co.uk/news/rss.xml",
+   "politics": "https://feeds.bbci.co.uk/news/politics/rss.xml",
+   "business": "https://feeds.bbci.co.uk/news/business/rss.xml",
+   "tech": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+   "science": "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml",
+   "health": "https://feeds.bbci.co.uk/news/health/rss.xml",
+   "culture": "https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml",
+   "sports": "https://feeds.bbci.co.uk/sport/rss.xml"
+  },
+  "defaultEnabled": true
+ },
+ {
+  "id": "guardian",
+  "country": "gb",
+  "name": "The Guardian",
+  "type": "rss",
+  "feeds": {
+   "top": "https://www.theguardian.com/uk/rss",
+   "politics": "https://www.theguardian.com/politics/rss",
+   "business": "https://www.theguardian.com/uk/business/rss",
+   "tech": "https://www.theguardian.com/uk/technology/rss",
+   "science": "https://www.theguardian.com/science/rss",
+   "health": "https://www.theguardian.com/society/health/rss",
+   "culture": "https://www.theguardian.com/uk/culture/rss",
+   "sports": "https://www.theguardian.com/uk/sport/rss"
+  },
+  "defaultEnabled": false
+ }
+]
