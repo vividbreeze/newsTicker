@@ -19,13 +19,12 @@ struct SettingsView: View {
                 if draft != nil {
                     countriesSection
                     countSection
-                    summarySection
                     sourcesSection
                 }
-                Section("Darstellung") {
+                Section {
                     Picker("Darstellung", selection: $appearance) {
                         ForEach(AppearanceChoice.allCases) { Text($0.label).tag($0.rawValue) }
-                    }.pickerStyle(.segmented)
+                    }
                 }
                 if let saveError { Section { Text(saveError).foregroundStyle(.red) } }
                 Section { Text("Die Einstellungen werden auf dem Server gespeichert und gelten für alle Geräte.").font(.footnote).foregroundStyle(.secondary) }
@@ -80,24 +79,19 @@ struct SettingsView: View {
     }
 
     private var countSection: some View {
-        Section("Anzahl Meldungen") {
+        Section("Anzeige") {
             Stepper(value: Binding(get: { draft?.itemCount ?? 12 }, set: { draft?.itemCount = $0; commit(debounce: true) }), in: 5...30) {
                 Text("\(draft?.itemCount ?? 12) Meldungen")
+            }
+            Picker("Zusammenfassung", selection: Binding(get: { draft?.summaryLength ?? .medium }, set: { draft?.summaryLength = $0; commit() })) {
+                ForEach(SummaryLength.allCases) { Text($0.label).tag($0) }
             }
         }
     }
 
-    private var summarySection: some View {
-        Section("Zusammenfassung") {
-            Picker("Zusammenfassung", selection: Binding(get: { draft?.summaryLength ?? .medium }, set: { draft?.summaryLength = $0; commit() })) {
-                ForEach(SummaryLength.allCases) { Text($0.label).tag($0) }
-            }.pickerStyle(.segmented)
-        }
-    }
-
     private var sourcesSection: some View {
-        ForEach((draft?.activeCountries ?? []) + inactiveCountries, id: \.self) { code in
-            Section {
+        Section("Quellen") {
+            ForEach((draft?.activeCountries ?? []) + inactiveCountries, id: \.self) { code in
                 DisclosureGroup(isExpanded: Binding(get: { expanded.contains(code) }, set: { if $0 { expanded.insert(code) } else { expanded.remove(code) } })) {
                     ForEach(draft?.sources[code] ?? [], id: \.id) { src in
                         let info = model.sources.first { $0.id == src.id }
@@ -113,7 +107,7 @@ struct SettingsView: View {
                     }
                     .onMove { from, to in draft?.sources[code]?.move(fromOffsets: from, toOffset: to); commit() }
                 } label: { HStack(spacing: 10) { FlagView(code: code); Text(countryName(code)) } }
-            } header: { if code == draft?.activeCountries.first { Text("Quellen") } }
+            }
         }
     }
 
