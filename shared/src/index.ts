@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const COUNTRY_CODES = ['jp', 'de', 'us', 'gb'] as const;
+export const COUNTRY_CODES = ['jp', 'de', 'us', 'gb', 'co'] as const;
 export const CountrySchema = z.enum(COUNTRY_CODES);
 export type CountryCode = z.infer<typeof CountrySchema>;
 
@@ -9,6 +9,7 @@ export const COUNTRIES: Record<CountryCode, { name: string; lang: string; flag: 
   de: { name: 'Deutschland', lang: 'de', flag: '🇩🇪', short: 'DE' },
   us: { name: 'USA', lang: 'en', flag: '🇺🇸', short: 'US' },
   gb: { name: 'England/UK', lang: 'en', flag: '🇬🇧', short: 'UK' },
+  co: { name: 'Kolumbien', lang: 'es', flag: '🇨🇴', short: 'CO' },
 };
 
 export const CATEGORIES = [
@@ -70,7 +71,7 @@ export const SettingsSchema = z.object({
   summaryLength: SummaryLengthSchema,
   defaultCategory: CategorySchema,
   /** Pro Land: Quellen in Reißverschluss-Reihenfolge inkl. Schalter. */
-  sources: z.record(CountrySchema, z.array(SourceSettingSchema)),
+  sources: z.partialRecord(CountrySchema, z.array(SourceSettingSchema)),
 });
 export type Settings = z.infer<typeof SettingsSchema>;
 

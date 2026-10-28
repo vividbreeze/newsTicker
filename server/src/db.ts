@@ -34,19 +34,21 @@ export function openDb(path: string): DB {
   return db;
 }
 
+/** Legt fehlende Quellen aus dem Seed an (auch bei bestehender DB, z. B. neues Land); vorhandene bleiben unberührt. */
 export function seedIfEmpty(db: DB, seedPath: string): void {
-  const count = db.prepare('SELECT COUNT(*) c FROM sources').get() as { c: number };
-  if (count.c > 0) return;
   const seeds = z.array(SeedSourceSchema).parse(JSON.parse(readFileSync(seedPath, 'utf8')));
   seedSources(db, seeds);
 }
 
 export function seedSources(db: DB, seeds: SeedSource[]): void {
   const ins = db.prepare('INSERT OR IGNORE INTO sources (id,country,name,type,feeds,position,enabled) VALUES (?,?,?,?,?,?,?)');
+  const maxPos = db.prepare('SELECT COALESCE(MAX(position), -1) m FROM sources WHERE country=?');
+  const exists = db.prepare('SELECT 1 FROM sources WHERE id=?');
   const pos: Record<string, number> = {};
   db.transaction(() => {
     for (const s of seeds) {
-      pos[s.country] = (pos[s.country] ?? 0);
+      if (exists.get(s.id)) continue;
+      pos[s.country] ??= (maxPos.get(s.country) as { m: number }).m + 1;
       ins.run(s.id, s.country, s.name, s.type, JSON.stringify(s.feeds), pos[s.country]++, s.defaultEnabled ? 1 : 0);
     }
   })();

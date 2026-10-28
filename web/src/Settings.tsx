@@ -39,13 +39,13 @@ export function SettingsScreen({ conn, meta, settings, prefs, onBack, onSettings
     push({ ...s, activeCountries: a });
   }
   function moveSource(c: CountryCode, i: number, d: -1 | 1) {
-    const a = [...s.sources[c]]; const j = i + d;
+    const a = [...(s.sources[c] ?? [])]; const j = i + d;
     if (j < 0 || j >= a.length) return;
     [a[i], a[j]] = [a[j], a[i]];
     push({ ...s, sources: { ...s.sources, [c]: a } });
   }
   function toggleSource(c: CountryCode, id: string) {
-    push({ ...s, sources: { ...s.sources, [c]: s.sources[c].map((x) => (x.id === id ? { ...x, enabled: !x.enabled } : x)) } });
+    push({ ...s, sources: { ...s.sources, [c]: (s.sources[c] ?? []).map((x) => (x.id === id ? { ...x, enabled: !x.enabled } : x)) } });
   }
 
   async function testConn() {
@@ -115,7 +115,7 @@ export function SettingsScreen({ conn, meta, settings, prefs, onBack, onSettings
               <span className="grow left">{name(c).flag} {name(c).name}</span>
               {openC === c ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
             </button>
-            {openC === c && s.sources[c].map((src, i) => {
+            {openC === c && (s.sources[c] ?? []).map((src, i) => {
               const info = sources.find((x) => x.id === src.id);
               return (
                 <div className="row source-row" key={src.id}>
@@ -129,7 +129,7 @@ export function SettingsScreen({ conn, meta, settings, prefs, onBack, onSettings
                     </div>
                   </div>
                   <button className="icon-btn small" disabled={i === 0} onClick={() => moveSource(c, i, -1)} aria-label="Nach oben"><ArrowUp size={18} /></button>
-                  <button className="icon-btn small" disabled={i === s.sources[c].length - 1} onClick={() => moveSource(c, i, 1)} aria-label="Nach unten"><ArrowDown size={18} /></button>
+                  <button className="icon-btn small" disabled={i === (s.sources[c] ?? []).length - 1} onClick={() => moveSource(c, i, 1)} aria-label="Nach unten"><ArrowDown size={18} /></button>
                   <label className="switch"><input type="checkbox" checked={src.enabled} onChange={() => toggleSource(c, src.id)} aria-label={`${info?.name ?? src.id} aktiv`} /><span /></label>
                 </div>
               );

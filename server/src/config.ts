@@ -29,7 +29,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     anthropicModel: env.ANTHROPIC_MODEL || 'claude-haiku-5-5',
     cacheTtlMinutes: num(env.CACHE_TTL_MINUTES, 20),
     rateLimitPerMinute: num(env.RATE_LIMIT_PER_MINUTE, 30),
-    llmMaxCallsPerDay: num(env.LLM_MAX_CALLS_PER_DAY, 300),
+    llmMaxCallsPerDay: num(env.LLM_MAX_CALLS_PER_DAY, 600),
     maxAgeHours: num(env.MAX_AGE_HOURS, 48),
     feedTimeoutMs: num(env.FEED_TIMEOUT_MS, 8000),
     dbPath: env.DB_PATH || './data/ticker.sqlite',

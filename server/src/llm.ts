@@ -42,7 +42,7 @@ const SENTENCES: Record<SummaryLength, { teaser: string; detail: string }> = {
   medium: { teaser: '2 Sätze', detail: 'ca. 6–8 Sätze' },
   long: { teaser: '3 Sätze', detail: 'ca. 12–15 Sätze inklusive Hintergrund und Einordnung (nur soweit im Text belegt)' },
 };
-const LANG: Record<string, string> = { ja: 'Japanisch', en: 'Englisch', de: 'Deutsch' };
+const LANG: Record<string, string> = { ja: 'Japanisch', en: 'Englisch', de: 'Deutsch', es: 'Spanisch' };
 
 const BASE_RULES = `Du bist Redakteur eines deutschen Nachrichtentickers.
 - Sachlich und neutral, keine Wertungen, keine Spekulation; erfinde nichts, was nicht in der Vorlage steht.

@@ -84,7 +84,7 @@ In Xcode unter Signing & Capabilities dein Team wählen und auf dem iPhone start
 
 ## Hinweise zu Quellen
 
-`npm run validate-feeds` bewertet jeden Seed-Feed. Stand der Prüfung (28.10.2026): 101 von 102 URLs erreichbar und parsebar. Bekannte Probleme:
+`npm run validate-feeds` bewertet jeden Seed-Feed. Stand der Prüfung (28.10.2026): 126 von 133 URLs erreichbar und parsebar. Bekannte Probleme:
 
 - **Yahoo! News Japan** liefert von außerhalb Japans `403` (Geo-/Bot-Sperre). Standardmäßig aus; je nach VPS-Standort funktioniert es evtl. – der Status-Punkt in den Einstellungen zeigt es.
 - **NYT Sport** (`Sports.xml`) ist zwar erreichbar, aber leer und wurde aus dem Seed entfernt (NYT erscheint unter „Sport" nicht).

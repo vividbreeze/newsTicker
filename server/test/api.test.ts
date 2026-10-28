@@ -80,3 +80,27 @@ describe('API', () => {
     expect(codes).toContain(429);
   });
 });
+
+describe('Seed-Sync', () => {
+  it('ergänzt neue Quellen/Länder in bestehender DB, ohne Vorhandenes zu ändern', async () => {
+    const { openDb, seedSources, listSources, saveSettings, getSettings } = await import('../src/db.js');
+    const db = openDb(':memory:');
+    const base = [{ id: 'a', country: 'jp' as const, name: 'A', type: 'rss' as const, feeds: { top: 'https://a' }, defaultEnabled: true }];
+    seedSources(db, base);
+    const s = getSettings(db);
+    saveSettings(db, { ...s, sources: { ...s.sources, jp: [{ id: 'a', enabled: false }] } });
+    seedSources(db, [...base, { id: 'b', country: 'jp', name: 'B', type: 'rss', feeds: { top: 'https://b' }, defaultEnabled: true },
+      { id: 'c', country: 'co', name: 'C', type: 'rss', feeds: { top: 'https://c' }, defaultEnabled: true }]);
+    expect(listSources(db, 'jp').map((x) => [x.id, x.position, x.enabled])).toEqual([['a', 0, false], ['b', 1, true]]);
+    expect(listSources(db, 'co')).toHaveLength(1);
+    expect(getSettings(db).sources.co).toEqual([{ id: 'c', enabled: true }]);
+  });
+  it('Seed-Datei ist gültig und enthält Kolumbien mit Medellín-Quellen', async () => {
+    const { readFileSync } = await import('node:fs');
+    const { SeedSourceSchema } = await import('@ticker/shared');
+    const seed = JSON.parse(readFileSync(new URL('../seed/sources.json', import.meta.url), 'utf8')).map((x: unknown) => SeedSourceSchema.parse(x));
+    const co = seed.filter((s: any) => s.country === 'co');
+    expect(co.map((s: any) => s.id)).toEqual(expect.arrayContaining(['google-co', 'elcolombiano', 'google-medellin']));
+    expect(Object.keys(co.find((s: any) => s.id === 'google-medellin').feeds)).toHaveLength(8);
+  });
+});

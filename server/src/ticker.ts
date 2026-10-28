@@ -18,13 +18,14 @@ export function cacheKey(country: string, category: string, sourceIds: string[],
 }
 
 const inflight = new Map<string, Promise<TickerResponse>>();
+const prefetchFailed = new Set<string>(); // kein Artikeltext/Fehler: nicht bei jedem Abruf neu versuchen
 const prefetchJobs = new Map<string, Promise<void>>(); // itemId|length -> laufender Vorabruf
-const CHUNK = 4;
+const CHUNK = 2; // kleine Chunks: kürzere Wartezeit pro Meldung, mehr parallele Aufrufe
 
 type PrefetchItem = { id: string; title: string; url: string; sourceName: string };
 
 function startPrefetch(d: Deps, items: PrefetchItem[], lang: string, length: SummaryLength): void {
-  const todo = items.filter((i) => !store.getDetailCache(d.db, `${i.id}|${length}`) && !prefetchJobs.has(`${i.id}|${length}`));
+  const todo = items.filter((i) => !store.getDetailCache(d.db, `${i.id}|${length}`) && !prefetchJobs.has(`${i.id}|${length}`) && !prefetchFailed.has(`${i.id}|${length}`));
   if (todo.length === 0) return;
   // Artikel parallel holen; danach in kleinen Chunks parallel zusammenfassen (kürzere Wartezeit als ein Riesen-Aufruf).
   const texts = Promise.all(todo.map((i) => fetchArticleText(i.url, d.cfg, d.fetch).catch(() => null)));
@@ -33,10 +34,12 @@ function startPrefetch(d: Deps, items: PrefetchItem[], lang: string, length: Sum
   const run = async (chunk: PrefetchItem[]) => {
     const all = await texts;
     const withText = chunk.map((i) => ({ ...i, text: all[todo.indexOf(i)]?.text })).filter((i): i is PrefetchItem & { text: string } => !!i.text);
+    for (const i of chunk) if (!withText.some((w) => w.id === i.id)) prefetchFailed.add(`${i.id}|${length}`);
     if (withText.length === 0) return;
     const sums = await summarizeBatch(d.llm, withText, lang, length);
     for (const i of withText) {
       const summary = sums.get(i.id);
+      if (!summary) prefetchFailed.add(`${i.id}|${length}`);
       if (summary) store.putDetailCache(d.db, `${i.id}|${length}`, JSON.stringify({ id: i.id, summary, limited: false, url: i.url, sourceName: i.sourceName }));
     }
   };
@@ -53,7 +56,10 @@ export function getTicker(d: Deps, country: CountryCode, category: string, refre
   const now = (d.now ?? Date.now)();
   const cached = store.getCached(d.db, key);
   if (cached && !refresh && now - cached.fetchedAt < d.cfg.cacheTtlMinutes * 60_000) {
-    return Promise.resolve(TickerResponseSchema.parse(JSON.parse(cached.body)));
+    const hit = TickerResponseSchema.parse(JSON.parse(cached.body));
+    // Fehlende Details (z. B. nach Neustart) im Hintergrund nachholen.
+    if (d.cfg.prefetchDetails) startPrefetch(d, hit.items.map((i) => ({ id: i.id, title: i.originalTitle, url: i.url, sourceName: i.sourceName })), COUNTRIES[country].lang, settings.summaryLength);
+    return Promise.resolve(hit);
   }
   let p = inflight.get(key);
   if (!p) {

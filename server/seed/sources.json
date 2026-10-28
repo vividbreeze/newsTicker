@@ -250,5 +250,109 @@
    "sports": "https://www.theguardian.com/uk/sport/rss"
   },
   "defaultEnabled": false
+ },
+ {
+  "id": "google-co",
+  "country": "co",
+  "name": "Google News Kolumbien",
+  "type": "google_news",
+  "feeds": {
+   "top": "https://news.google.com/rss?hl=es-419&gl=CO&ceid=CO:es-419",
+   "politics": "https://news.google.com/rss/headlines/section/topic/NATION?hl=es-419&gl=CO&ceid=CO:es-419",
+   "business": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=es-419&gl=CO&ceid=CO:es-419",
+   "tech": "https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=es-419&gl=CO&ceid=CO:es-419",
+   "science": "https://news.google.com/rss/headlines/section/topic/SCIENCE?hl=es-419&gl=CO&ceid=CO:es-419",
+   "health": "https://news.google.com/rss/headlines/section/topic/HEALTH?hl=es-419&gl=CO&ceid=CO:es-419",
+   "culture": "https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=es-419&gl=CO&ceid=CO:es-419",
+   "sports": "https://news.google.com/rss/headlines/section/topic/SPORTS?hl=es-419&gl=CO&ceid=CO:es-419"
+  },
+  "defaultEnabled": true
+ },
+ {
+  "id": "elcolombiano",
+  "country": "co",
+  "name": "El Colombiano (Medellín)",
+  "type": "rss",
+  "feeds": {
+   "top": "https://www.elcolombiano.com/rss/medellin.xml",
+   "business": "https://www.elcolombiano.com/rss/negocios.xml",
+   "tech": "https://www.elcolombiano.com/rss/tecnologia.xml",
+   "culture": "https://www.elcolombiano.com/rss/cultura.xml",
+   "sports": "https://www.elcolombiano.com/rss/deportes.xml"
+  },
+  "defaultEnabled": true
+ },
+ {
+  "id": "google-medellin",
+  "country": "co",
+  "name": "Google News Medellín",
+  "type": "google_news",
+  "feeds": {
+   "top": "https://news.google.com/rss/search?q=Medell%C3%ADn%20when%3A3d&hl=es-419&gl=CO&ceid=CO:es-419",
+   "politics": "https://news.google.com/rss/search?q=Medell%C3%ADn%20%28pol%C3%ADtica%20OR%20alcald%C3%ADa%20OR%20concejo%29%20when%3A3d&hl=es-419&gl=CO&ceid=CO:es-419",
+   "business": "https://news.google.com/rss/search?q=Medell%C3%ADn%20%28econom%C3%ADa%20OR%20empresas%20OR%20negocios%29%20when%3A3d&hl=es-419&gl=CO&ceid=CO:es-419",
+   "tech": "https://news.google.com/rss/search?q=Medell%C3%ADn%20%28tecnolog%C3%ADa%20OR%20innovaci%C3%B3n%20OR%20tecnol%C3%B3gico%29%20when%3A3d&hl=es-419&gl=CO&ceid=CO:es-419",
+   "science": "https://news.google.com/rss/search?q=Medell%C3%ADn%20%28ciencia%20OR%20investigaci%C3%B3n%20OR%20universidad%29%20when%3A3d&hl=es-419&gl=CO&ceid=CO:es-419",
+   "health": "https://news.google.com/rss/search?q=Medell%C3%ADn%20%28salud%20OR%20hospital%29%20when%3A3d&hl=es-419&gl=CO&ceid=CO:es-419",
+   "culture": "https://news.google.com/rss/search?q=Medell%C3%ADn%20%28cultura%20OR%20m%C3%BAsica%20OR%20arte%20OR%20teatro%29%20when%3A3d&hl=es-419&gl=CO&ceid=CO:es-419",
+   "sports": "https://news.google.com/rss/search?q=Medell%C3%ADn%20%28deportes%20OR%20%22Atl%C3%A9tico%20Nacional%22%20OR%20%22Independiente%20Medell%C3%ADn%22%29%20when%3A3d&hl=es-419&gl=CO&ceid=CO:es-419"
+  },
+  "defaultEnabled": true
+ },
+ {
+  "id": "eltiempo",
+  "country": "co",
+  "name": "El Tiempo",
+  "type": "rss",
+  "feeds": {
+   "top": "https://www.eltiempo.com/rss/colombia.xml",
+   "politics": "https://www.eltiempo.com/rss/politica.xml",
+   "business": "https://www.eltiempo.com/rss/economia.xml",
+   "tech": "https://www.eltiempo.com/rss/tecnosfera.xml",
+   "health": "https://www.eltiempo.com/rss/salud.xml",
+   "culture": "https://www.eltiempo.com/rss/cultura.xml",
+   "sports": "https://www.eltiempo.com/rss/deportes.xml"
+  },
+  "defaultEnabled": false
+ },
+ {
+  "id": "infobae-co",
+  "country": "co",
+  "name": "Infobae Colombia",
+  "type": "rss",
+  "feeds": {
+   "top": "https://www.infobae.com/arc/outboundfeeds/rss/category/colombia/"
+  },
+  "defaultEnabled": false
+ },
+ {
+  "id": "semana",
+  "country": "co",
+  "name": "Semana",
+  "type": "rss",
+  "feeds": {
+   "top": "https://www.semana.com/arc/outboundfeeds/rss/?outputType=xml"
+  },
+  "defaultEnabled": false
+ },
+ {
+  "id": "minuto30",
+  "country": "co",
+  "name": "Minuto30 (Medellín)",
+  "type": "rss",
+  "feeds": {
+   "top": "https://www.minuto30.com/feed/"
+  },
+  "defaultEnabled": false
+ },
+ {
+  "id": "telemedellin",
+  "country": "co",
+  "name": "Telemedellín",
+  "type": "rss",
+  "feeds": {
+   "top": "https://telemedellin.tv/feed/"
+  },
+  "defaultEnabled": false
  }
 ]
