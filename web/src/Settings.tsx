@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Check, ChevronDown, ChevronLeft, ChevronUp, ArrowUp, ArrowDown } from 'lucide-react';
-import { COUNTRY_CODES, type CountryCode, type Meta, type Settings, type SourceInfo } from '@ticker/shared';
+import { ChevronDown, ChevronLeft, ChevronUp, ArrowUp, ArrowDown } from 'lucide-react';
+import { type CountryCode, type Meta, type Settings, type SourceInfo } from '@ticker/shared';
 import { api } from './api';
 import type { Conn, Prefs } from './storage';
 
@@ -26,15 +26,9 @@ export function SettingsScreen({ conn, meta, settings, prefs, onBack, onSettings
     catch (e) { setSaveErr(e instanceof Error ? e.message : 'Speichern fehlgeschlagen'); }
   }
 
-  function toggleCountry(c: CountryCode) {
-    const has = s.activeCountries.includes(c);
-    if (has) return; // genau drei: ein inaktives Land ersetzt das dritte
-    const next = [...s.activeCountries.slice(0, 2), c];
-    push({ ...s, activeCountries: next });
-  }
   function moveCountry(i: number, d: -1 | 1) {
     const a = [...s.activeCountries]; const j = i + d;
-    if (j < 0 || j > 2) return;
+    if (j < 0 || j >= a.length) return;
     [a[i], a[j]] = [a[j], a[i]];
     push({ ...s, activeCountries: a });
   }
@@ -55,7 +49,6 @@ export function SettingsScreen({ conn, meta, settings, prefs, onBack, onSettings
   }
 
   const name = (c: CountryCode) => meta.countries.find((x) => x.code === c)!;
-  const inactive = COUNTRY_CODES.filter((c) => !s.activeCountries.includes(c));
   const catLabel = (k: string) => meta.categories.find((c) => c.key === k)?.label ?? k;
 
   return (
@@ -75,20 +68,14 @@ export function SettingsScreen({ conn, meta, settings, prefs, onBack, onSettings
         </div>
         {test && <p className={test.ok ? 'footnote ok' : 'footnote err'}>{test.msg}</p>}
 
-        <h3 className="group-title">Länder (genau 3, in Anzeigereihenfolge)</h3>
+        <h3 className="group-title">Reihenfolge der Länder</h3>
         <div className="group">
           {s.activeCountries.map((c, i) => (
             <div className="row" key={c}>
               <span className="grow">{name(c).flag} {name(c).name}</span>
               <button className="icon-btn small" disabled={i === 0} onClick={() => moveCountry(i, -1)} aria-label={`${name(c).name} nach oben`}><ArrowUp size={18} /></button>
-              <button className="icon-btn small" disabled={i === 2} onClick={() => moveCountry(i, 1)} aria-label={`${name(c).name} nach unten`}><ArrowDown size={18} /></button>
-              <Check size={20} className="accent" aria-label="aktiv" />
+              <button className="icon-btn small" disabled={i === s.activeCountries.length - 1} onClick={() => moveCountry(i, 1)} aria-label={`${name(c).name} nach unten`}><ArrowDown size={18} /></button>
             </div>
-          ))}
-          {inactive.map((c) => (
-            <button className="row link" key={c} onClick={() => toggleCountry(c)}>
-              <span className="grow left">{name(c).flag} {name(c).name}</span><span className="footnote">ersetzt {name(s.activeCountries[2]).name}</span>
-            </button>
           ))}
         </div>
 
@@ -109,7 +96,7 @@ export function SettingsScreen({ conn, meta, settings, prefs, onBack, onSettings
         </div>
 
         <h3 className="group-title">Quellen</h3>
-        {[...s.activeCountries, ...inactive].map((c) => (
+        {s.activeCountries.map((c) => (
           <div className="group" key={c}>
             <button className="row link" onClick={() => setOpenC(openC === c ? null : c)} aria-expanded={openC === c}>
               <span className="grow left">{name(c).flag} {name(c).name}</span>

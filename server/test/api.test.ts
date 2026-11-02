@@ -52,17 +52,19 @@ describe('API', () => {
   it('validiert Parameter und aktive Länder', async () => {
     const { app } = await setup();
     expect((await app.inject({ url: '/api/ticker?country=xx&category=top', headers: auth })).statusCode).toBe(400);
-    expect((await app.inject({ url: '/api/ticker?country=gb&category=top', headers: auth })).statusCode).toBe(400); // gb nicht aktiv (Default jp,us,de)
     expect((await app.inject({ url: '/api/ticker/zzz/detail', headers: auth })).statusCode).toBe(400);
   });
-  it('Settings: speichern, validieren (genau 3 Länder)', async () => {
+  it('Settings: speichern, Länderreihenfolge, Validierung', async () => {
     const { app, db } = await setup();
     const cur = getSettings(db);
     const ok = await app.inject({ method: 'PUT', url: '/api/settings', headers: auth, payload: { ...cur, itemCount: 7, summaryLength: 'long', sources: { ...cur.sources, jp: [{ id: 'asahi', enabled: true }, { id: 'google-jp', enabled: false }] } } });
     expect(ok.statusCode).toBe(200);
     expect(ok.json().sources.jp[0]).toEqual({ id: 'asahi', enabled: true });
     expect(getSettings(db).itemCount).toBe(7);
-    const bad = await app.inject({ method: 'PUT', url: '/api/settings', headers: auth, payload: { ...cur, activeCountries: ['jp', 'us'] } });
+    expect(cur.activeCountries).toEqual(['jp', 'us', 'de', 'gb', 'co']); // alle Länder, Standardreihenfolge
+    const reorder = await app.inject({ method: 'PUT', url: '/api/settings', headers: auth, payload: { ...cur, activeCountries: ['co', 'jp'] } });
+    expect(reorder.json().activeCountries).toEqual(['co', 'jp', 'us', 'de', 'gb']); // fehlende werden angehängt
+    const bad = await app.inject({ method: 'PUT', url: '/api/settings', headers: auth, payload: { ...cur, activeCountries: ['jp', 'jp'] } });
     expect(bad.statusCode).toBe(400);
     const bad2 = await app.inject({ method: 'PUT', url: '/api/settings', headers: auth, payload: { ...cur, sources: { ...cur.sources, jp: [{ id: 'nyt', enabled: true }] } } });
     expect(bad2.statusCode).toBe(400);

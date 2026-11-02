@@ -101,3 +101,9 @@ button.primary { background: var(--accent); color: var(--accent-fg); min-height:
 .nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; min-height: 44px; padding-top: env(safe-area-inset-top); border-bottom: .5px solid var(--sep); }
 .nav-title { font-size: 17px; font-weight: 600; margin: 0; }
 .back { position: absolute; left: 8px; display: inline-flex; align-items: center; color: var(--accent); min-height: 44px; }
+
+/* Länder: alle anzeigen, bei Platzmangel seitlich scrollen */
+.countries { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; background: var(--fill); border-radius: 9px; padding: 2px; margin: 8px 0; }
+.countries::-webkit-scrollbar { display: none; }
+.countries button { flex: 1 0 auto; min-width: 72px; min-height: 44px; padding: 0 12px; border-radius: 7px; font-size: 14px; font-weight: 500; white-space: nowrap; }
+.countries button.on { background: var(--card); box-shadow: 0 1px 3px rgba(0,0,0,.15); font-weight: 600; }

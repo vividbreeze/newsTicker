@@ -43,25 +43,32 @@ struct TickerView: View {
         .background(.bar)
     }
 
-    /// Eigenes Segmented Control: der System-Picker stellt Flaggen-Emojis nicht zuverlässig dar.
+    /// Alle Länder; bei Platzmangel seitlich scrollbar. Eigenes Segmented Control, da der System-Picker Flaggen/Scrollen nicht kann.
     private var countryPicker: some View {
-        HStack(spacing: 2) {
-            ForEach(model.settings?.activeCountries ?? [], id: \.self) { code in
-                if let c = model.meta?.countries.first(where: { $0.code == code }) {
-                    let on = code == model.country
-                    Button { model.country = code } label: {
-                        HStack(spacing: 6) { FlagView(code: c.code); Text(c.short) }.font(.subheadline.weight(on ? .semibold : .medium))
-                            .frame(maxWidth: .infinity, minHeight: 40)
-                            .background(on ? Color(.systemBackground) : .clear, in: RoundedRectangle(cornerRadius: 8))
-                            .shadow(color: on ? .black.opacity(0.12) : .clear, radius: 2, y: 1)
-                            .foregroundStyle(.primary)
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 2) {
+                    ForEach(model.settings?.activeCountries ?? [], id: \.self) { code in
+                        if let c = model.meta?.countries.first(where: { $0.code == code }) {
+                            let on = code == model.country
+                            Button { model.country = code } label: {
+                                HStack(spacing: 6) { FlagView(code: c.code); Text(c.short) }
+                                    .font(.subheadline.weight(on ? .semibold : .medium))
+                                    .padding(.horizontal, 14).frame(minWidth: 76, minHeight: 40)
+                                    .background(on ? Color(.systemBackground) : .clear, in: RoundedRectangle(cornerRadius: 8))
+                                    .shadow(color: on ? .black.opacity(0.12) : .clear, radius: 2, y: 1)
+                                    .foregroundStyle(.primary)
+                            }
+                            .id(code)
+                            .accessibilityLabel(c.name).accessibilityAddTraits(on ? .isSelected : [])
+                        }
                     }
-                    .accessibilityLabel(c.name).accessibilityAddTraits(on ? .isSelected : [])
-                }
+                }.padding(2)
             }
+            .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
+            .animation(.easeInOut(duration: 0.15), value: model.country)
+            .onChange(of: model.country) { _, new in withAnimation { proxy.scrollTo(new, anchor: .center) } }
         }
-        .padding(2).background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
-        .animation(.easeInOut(duration: 0.15), value: model.country)
     }
 
     private var categoryChips: some View {

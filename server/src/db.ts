@@ -53,7 +53,7 @@ export function seedSources(db: DB, seeds: SeedSource[]): void {
     }
   })();
   if (!db.prepare("SELECT 1 FROM kv WHERE k='settings'").get()) {
-    const defaults = { activeCountries: ['jp', 'us', 'de'], itemCount: 12, summaryLength: 'medium', defaultCategory: 'top' };
+    const defaults = { activeCountries: ['jp', 'us', 'de', 'gb', 'co'], itemCount: 12, summaryLength: 'medium', defaultCategory: 'top' };
     db.prepare("INSERT INTO kv (k,v) VALUES ('settings',?)").run(JSON.stringify(defaults));
   }
 }
@@ -70,16 +70,26 @@ export function listSources(db: DB, country?: CountryCode): SourceRow[] {
   return rows.map(rowToSource);
 }
 
+const DEFAULT_ORDER: CountryCode[] = ['jp', 'us', 'de', 'gb', 'co'];
+
+/** Alle Länder werden angezeigt; gespeichert wird nur die Reihenfolge (fehlende Länder hinten angehängt). */
+export function normalizeCountries(order: readonly string[]): CountryCode[] {
+  const known = order.filter((c): c is CountryCode => (COUNTRY_CODES as readonly string[]).includes(c));
+  const uniq = [...new Set(known)];
+  return [...uniq, ...DEFAULT_ORDER.filter((c) => !uniq.includes(c))];
+}
+
 export function getSettings(db: DB): Settings {
   const raw = JSON.parse((db.prepare("SELECT v FROM kv WHERE k='settings'").get() as { v: string }).v);
   const sources = {} as Settings['sources'];
   for (const c of COUNTRY_CODES) sources[c] = listSources(db, c).map((s) => ({ id: s.id, enabled: s.enabled }));
-  return SettingsSchema.parse({ ...raw, sources });
+  return SettingsSchema.parse({ ...raw, activeCountries: normalizeCountries(raw.activeCountries ?? []), sources });
 }
 
 export function saveSettings(db: DB, s: Settings): void {
   db.transaction(() => {
-    const { sources, ...rest } = s;
+    const { sources, ...rest0 } = s;
+    const rest = { ...rest0, activeCountries: normalizeCountries(rest0.activeCountries) };
     db.prepare("INSERT INTO kv (k,v) VALUES ('settings',?) ON CONFLICT(k) DO UPDATE SET v=excluded.v").run(JSON.stringify(rest));
     const upd = db.prepare('UPDATE sources SET position=?, enabled=? WHERE id=? AND country=?');
     for (const c of COUNTRY_CODES) {

@@ -89,7 +89,7 @@ function Ticker({ conn, meta, settings, prefs, setPrefs, openSettings }: TProps)
       if (e.target instanceof HTMLElement && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
       if (e.key === 'ArrowRight') stepCat(1);
       else if (e.key === 'ArrowLeft') stepCat(-1);
-      else if (['1', '2', '3'].includes(e.key)) setPrefs({ ...prefs, country: countries[+e.key - 1], category });
+      else if (/^[1-9]$/.test(e.key) && countries[+e.key - 1]) setPrefs({ ...prefs, country: countries[+e.key - 1], category });
     };
     window.addEventListener('keydown', h);
     return () => window.removeEventListener('keydown', h);
@@ -145,7 +145,7 @@ function Ticker({ conn, meta, settings, prefs, setPrefs, openSettings }: TProps)
             <button className="icon-btn" onClick={openSettings} aria-label="Einstellungen"><Cog size={22} aria-hidden /></button>
           </div>
         </div>
-        <div className="segmented" role="tablist" aria-label="Land">
+        <div className="countries" role="tablist" aria-label="Land">
           {countries.map((c) => (
             <button key={c} role="tab" aria-selected={c === country} className={c === country ? 'on' : ''} onClick={() => pick({ country: c })}>
               {meta1(c).flag} {meta1(c).short}

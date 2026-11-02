@@ -66,7 +66,8 @@ export type TickerDetail = z.infer<typeof TickerDetailSchema>;
 
 export const SourceSettingSchema = z.object({ id: z.string(), enabled: z.boolean() });
 export const SettingsSchema = z.object({
-  activeCountries: z.array(CountrySchema).length(3).refine((a) => new Set(a).size === 3, 'Länder müssen verschieden sein'),
+  /** Anzeigereihenfolge. Alle Länder werden angezeigt; der Server ergänzt fehlende am Ende. */
+  activeCountries: z.array(CountrySchema).min(1).refine((a) => new Set(a).size === a.length, 'Länder müssen verschieden sein'),
   itemCount: z.number().int().min(5).max(30),
   summaryLength: SummaryLengthSchema,
   defaultCategory: CategorySchema,

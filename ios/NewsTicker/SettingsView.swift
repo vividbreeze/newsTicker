@@ -63,23 +63,12 @@ struct SettingsView: View {
     private var countriesSection: some View {
         Section {
             ForEach(draft?.activeCountries ?? [], id: \.self) { code in
-                HStack(spacing: 10) {
-                    Image(systemName: "checkmark").foregroundStyle(.tint)
-                    FlagView(code: code); Text(countryName(code))
-                }
+                HStack(spacing: 10) { FlagView(code: code); Text(countryName(code)) }
             }
             .onMove { from, to in
                 draft?.activeCountries.move(fromOffsets: from, toOffset: to); commit()
             }
-            ForEach(inactiveCountries, id: \.self) { code in
-                Button {
-                    // Ein inaktives Land ersetzt das dritte.
-                    draft?.activeCountries[2] = code; commit()
-                } label: {
-                    HStack(spacing: 10) { Image(systemName: "checkmark").hidden(); FlagView(code: code); Text(countryName(code)).foregroundStyle(.primary); Spacer(); Text("ersetzt Platz 3").font(.footnote).foregroundStyle(.secondary) }
-                }
-            }.moveDisabled(true)
-        } header: { Text("Länder (genau 3, Reihenfolge ziehbar)") }
+        } header: { Text("Reihenfolge der Länder") }
     }
 
     private var countSection: some View {
@@ -95,7 +84,7 @@ struct SettingsView: View {
 
     private var sourcesSection: some View {
         Section("Quellen") {
-            ForEach((draft?.activeCountries ?? []) + inactiveCountries, id: \.self) { code in
+            ForEach(draft?.activeCountries ?? [], id: \.self) { code in
                 DisclosureGroup(isExpanded: Binding(get: { expanded.contains(code) }, set: { if $0 { expanded.insert(code) } else { expanded.remove(code) } })) {
                     ForEach(draft?.sources[code] ?? [], id: \.id) { src in
                         let info = model.sources.first { $0.id == src.id }
@@ -117,9 +106,6 @@ struct SettingsView: View {
 
     // MARK: Hilfen
 
-    private var inactiveCountries: [String] {
-        (model.meta?.countries.map(\.code) ?? []).filter { !(draft?.activeCountries.contains($0) ?? false) }
-    }
     private func countryName(_ code: String) -> String {
         model.meta?.countries.first(where: { $0.code == code })?.name ?? code
     }
