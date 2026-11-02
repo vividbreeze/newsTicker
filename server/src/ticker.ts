@@ -22,7 +22,10 @@ const prefetchFailed = new Set<string>(); // kein Artikeltext/Fehler: nicht bei 
 const prefetchJobs = new Map<string, Promise<void>>(); // itemId|length -> laufender Vorabruf
 const CHUNK = 2; // kleine Chunks: kürzere Wartezeit pro Meldung, mehr parallele Aufrufe
 
-type PrefetchItem = { id: string; title: string; url: string; sourceName: string };
+type PrefetchItem = { id: string; title: string; url: string; sourceName: string; published?: string };
+
+/** Veröffentlichungsdatum als YYYY-MM-DD (Berlin) für die Datumseinordnung im Prompt. */
+const day = (iso?: string | null) => (iso ? new Date(iso).toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' }) : undefined);
 
 function startPrefetch(d: Deps, items: PrefetchItem[], lang: string, length: SummaryLength): void {
   const todo = items.filter((i) => !store.getDetailCache(d.db, `${i.id}|${length}`) && !prefetchJobs.has(`${i.id}|${length}`) && !prefetchFailed.has(`${i.id}|${length}`));
@@ -58,7 +61,7 @@ export function getTicker(d: Deps, country: CountryCode, category: string, refre
   if (cached && !refresh && now - cached.fetchedAt < d.cfg.cacheTtlMinutes * 60_000) {
     const hit = TickerResponseSchema.parse(JSON.parse(cached.body));
     // Fehlende Details (z. B. nach Neustart) im Hintergrund nachholen.
-    if (d.cfg.prefetchDetails) startPrefetch(d, hit.items.map((i) => ({ id: i.id, title: i.originalTitle, url: i.url, sourceName: i.sourceName })), COUNTRIES[country].lang, settings.summaryLength);
+    if (d.cfg.prefetchDetails) startPrefetch(d, hit.items.map((i) => ({ id: i.id, title: i.originalTitle, url: i.url, sourceName: i.sourceName, published: day(i.publishedAt) })), COUNTRIES[country].lang, settings.summaryLength);
     return Promise.resolve(hit);
   }
   let p = inflight.get(key);
@@ -102,10 +105,10 @@ async function build(d: Deps, country: CountryCode, category: string, key: strin
   let tr: Map<string, { title: string; teaser: string }> | null = null;
   if (merged.length > 0) {
     try {
-      const out = await translateBatch(d.llm, merged.map((m) => ({ id: itemId(m.url), title: m.title, description: m.description })), lang, settings.summaryLength);
+      const out = await translateBatch(d.llm, merged.map((m) => ({ id: itemId(m.url), title: m.title, description: m.description, published: day(m.publishedAt) })), lang, settings.summaryLength);
       tr = new Map(out.map((o) => [o.id, o]));
     } catch (e) {
-      notice = `Übersetzung nicht verfügbar (${e instanceof Error ? e.message.slice(0, 120) : 'Fehler'}) – Originaltexte werden angezeigt.`;
+      notice = `Übersetzung nicht verfügbar (${e instanceof Error ? e.message.replace(/\s+/g, ' ').slice(0, 90) : 'Fehler'}) – Originaltexte werden angezeigt.`;
       console.error('LLM-Batch fehlgeschlagen:', e instanceof Error ? e.message : e);
     }
   }
@@ -127,7 +130,7 @@ async function build(d: Deps, country: CountryCode, category: string, key: strin
   // Ohne Übersetzung nicht lange cachen: nächster Abruf versucht es erneut.
   if (!notice) store.putCached(d.db, key, JSON.stringify(resp));
   // Details im Hintergrund vorbereiten: die Liste erscheint sofort, „Mehr" ist meist schon fertig.
-  if (!notice && d.cfg.prefetchDetails) startPrefetch(d, merged.map((m) => ({ id: itemId(m.url), title: m.title, url: m.url, sourceName: m.sourceName })), lang, settings.summaryLength);
+  if (!notice && d.cfg.prefetchDetails) startPrefetch(d, merged.map((m) => ({ id: itemId(m.url), title: m.title, url: m.url, sourceName: m.sourceName, published: day(m.publishedAt) })), lang, settings.summaryLength);
   return resp;
 }
 
@@ -149,12 +152,12 @@ export async function getDetail(d: Deps, id: string): Promise<TickerDetail | nul
   let cacheable = true;
   const article = await fetchArticleText(item.url, d.cfg, d.fetch);
   try {
-    if (article) summary = await summarizeArticle(d.llm, { title: item.originalTitle, text: article.text, lang, length: settings.summaryLength });
+    if (article) summary = await summarizeArticle(d.llm, { title: item.originalTitle, text: article.text, lang, length: settings.summaryLength, published: day(item.publishedAt) });
   } catch { cacheable = false; }
   if (!summary) {
     limited = true;
     try {
-      summary = await summarizeShort(d.llm, { title: item.originalTitle, description, lang, length: settings.summaryLength });
+      summary = await summarizeShort(d.llm, { title: item.originalTitle, description, lang, length: settings.summaryLength, published: day(item.publishedAt) });
     } catch {
       cacheable = false;
       summary = [item.title, item.teaser].filter(Boolean).join('. ');

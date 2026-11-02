@@ -14,7 +14,7 @@ describe('getTicker', () => {
     const r = await getTicker(deps, 'jp', 'top', false);
     expect(llm.calls).toBe(1);
     expect(r.items.map((i) => i.sourceId)).toEqual(['google-jp', 'asahi', 'google-jp']);
-    expect(r.items[0]).toMatchObject({ rank: 1, isTop: true, sourceName: 'NHK', originalTitle: '台風が接近', title: 'DE: 台風が接近' });
+    expect(r.items[0]).toMatchObject({ rank: 1, isTop: true, sourceName: 'NHK', originalTitle: '台風が接近', title: expect.stringMatching(/^DE /) });
     expect(r.items[1].isTop).toBe(true);
     expect(r.stale).toBe(false);
   });
@@ -121,5 +121,47 @@ describe('Batch-Robustheit', () => {
     const r = await getTicker(deps, 'jp', 'top', false);
     expect(r.notice).toBeUndefined();
     expect(r.items[0].title).toBe('T');
+  });
+});
+
+describe('Übersetzungsqualität', () => {
+  const mkItems = (n: number) => Array.from({ length: n }, (_, i) => ({ id: `id${i}`, title: `記事${i}`, description: '説明' }));
+
+  it('teilt in parallele Chunks (12 Einträge = 2 Aufrufe)', async () => {
+    const { translateBatch } = await import('../src/llm.js');
+    const llm = mockLlm();
+    const out = await translateBatch(llm, mkItems(12), 'ja', 'medium');
+    expect(out).toHaveLength(12);
+    expect(llm.calls).toBe(2);
+  });
+
+  it('holt unübersetzte (japanische) Titel gezielt nach', async () => {
+    const { translateBatch } = await import('../src/llm.js');
+    let call = 0;
+    const llm = { async complete(_s: string, u: string) {
+      call++;
+      const items = JSON.parse(u).items;
+      return JSON.stringify({ items: items.map((i: any, k: number) => ({ id: i.id, title: call === 1 && k === 0 ? i.title : `Titel ${i.id}`, teaser: `T ${i.id}` })) });
+    } };
+    const out = await translateBatch(llm, mkItems(3), 'ja', 'short');
+    expect(call).toBe(2);
+    expect(out.map((o) => o.title)).toEqual(['Titel id0', 'Titel id1', 'Titel id2']);
+  });
+
+  it('akzeptiert items als JSON-String', async () => {
+    const { translateBatch } = await import('../src/llm.js');
+    const llm = { async complete(_s: string, u: string) {
+      return JSON.stringify({ items: JSON.stringify(JSON.parse(u).items.map((i: any) => ({ id: i.id, title: `Titel ${i.id}`, teaser: '' }))) });
+    } };
+    const out = await translateBatch(llm, mkItems(2), 'ja', 'short');
+    expect(out[1].title).toBe('Titel id1');
+  });
+
+  it('übergibt das Veröffentlichungsdatum an das Modell', async () => {
+    const { translateBatch } = await import('../src/llm.js');
+    let seen = '';
+    const llm = { async complete(_s: string, u: string) { seen = u; return JSON.stringify({ items: JSON.parse(u).items.map((i: any) => ({ id: i.id, title: `T ${i.id}`, teaser: '' })) }); } };
+    await translateBatch(llm, [{ id: 'a', title: 'x', description: '', published: '2026-10-30' }], 'ja', 'short');
+    expect(seen).toContain('"published":"2026-10-30"');
   });
 });

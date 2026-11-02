@@ -35,7 +35,7 @@ export function mockLlm(): Llm & { calls: number } {
     async complete(_s: string, user: string) {
       m.calls++;
       const parsed = JSON.parse(user);
-      if (parsed.items) return JSON.stringify({ items: parsed.items.map((i: any) => ({ id: i.id, title: `DE: ${i.title}`, teaser: `Teaser ${i.id}`, summary: i.text ? `Zusammenfassung: ${i.title}` : null })) });
+      if (parsed.items) return JSON.stringify({ items: parsed.items.map((i: any) => ({ id: i.id, title: `DE ${i.id}`, teaser: `Teaser ${i.id}`, summary: i.text ? `Zusammenfassung: ${i.title}` : null })) });
       return JSON.stringify({ summary: `Zusammenfassung: ${parsed.title}` });
     },
   };

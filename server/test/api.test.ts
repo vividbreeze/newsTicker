@@ -5,7 +5,8 @@ import { getSettings } from '../src/db.js';
 
 const auth = { authorization: `Bearer ${TOKEN}` };
 async function setup() {
-  const { deps, db } = makeDeps({ 'https://g.test/top': fx('google.xml'), 'https://asahi.test/rdf': fx('rdf.xml') });
+  // Fixtures sind fest datiert: Altersfilter abschalten, damit der Test nicht von der Uhrzeit abhängt.
+  const { deps, db } = makeDeps({ 'https://g.test/top': fx('google.xml'), 'https://asahi.test/rdf': fx('rdf.xml') }, undefined, { maxAgeHours: 1e6 });
   return { app: await buildApp(deps), db };
 }
 
